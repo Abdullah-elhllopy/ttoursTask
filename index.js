@@ -39,17 +39,9 @@ input.addEventListener('input', () => {
     if (input.value.length > 0) {
         menu.classList.remove('hidden');
         menu.classList.add('block');
-
-    } 
-});
-input.addEventListener("click", (event) => {
-    if (!dropdown.contains(event.target)) {
+    } else {
         menu.classList.add('hidden');
         menu.classList.remove('block');
-    }
-    else {
-        menu.classList.remove('hidden');
-        menu.classList.add('block');
     }
 });
 
@@ -121,33 +113,39 @@ countries.forEach((country) => {
 
 searchInput.addEventListener("input", () => {
     const searchValue = searchInput.value.toLowerCase();
-    const filteredCountries = countries.filter((country) => {
-        return country.name.toLowerCase().includes(searchValue);
-    });
-
-    // remove all options except the placeholder option
-    optionsList.innerHTML = "";
-    const placeholderOption = document.createElement("li");
-    placeholderOption.classList.add("option");
-    placeholderOption.setAttribute("data-value", "");
-    placeholderOption.innerHTML = "Select a country";
-    optionsList.appendChild(placeholderOption);
-
-    // add filtered options to the ul element
-    filteredCountries.forEach((country) => {
-        const option = document.createElement("li");
-        option.classList.add("option");
-        option.setAttribute("data-value", country.name);
-        option.innerHTML = `<img src="${country.flag}" alt="${country.name} flag" width="16" height="16"> ${country.name}`;
-        optionsList.appendChild(option);
-    });
-
-    // show/hide the dropdown based on the number of options
-    if (filteredCountries.length > 0) {
-        optionsList.style.display = "block";
-    } else {
+    if(searchValue.length > 0) {
+        const filteredCountries = countries.filter((country) => {
+            return country.name.toLowerCase().includes(searchValue);
+        });
+        console.log(filteredCountries)
+        // remove all options except the placeholder option
+        optionsList.innerHTML = "";
+        const placeholderOption = document.createElement("li");
+        placeholderOption.classList.add("option");
+        placeholderOption.setAttribute("data-value", "");
+        placeholderOption.innerHTML = "Select a country";
+        optionsList.appendChild(placeholderOption);
+    
+        // add filtered options to the ul element
+        filteredCountries.forEach((country) => {
+            const option = document.createElement("li");
+            option.classList.add("option");
+            option.setAttribute("data-value", country.name);
+            option.innerHTML = `<img src="${country.flag}" alt="${country.name} flag" width="16" height="16"> ${country.name}`;
+            optionsList.appendChild(option);
+        });
+    
+        // show/hide the dropdown based on the number of options
+        if (filteredCountries.length > 0) {
+            optionsList.style.display = "block";
+        } else {
+            optionsList.style.display = "none";
+        }
+    }else{
         optionsList.style.display = "none";
+        
     }
+   
 });
 
 // hide the dropdown when the user clicks outside of it
@@ -157,10 +155,7 @@ document.addEventListener("click", (event) => {
     }
 });
 
-// show the dropdown when the user clicks on the search input
-searchInput.addEventListener("click", () => {
-    optionsList.style.display = "block";
-});
+
 
 // select the clicked option and update the search input value
 optionsList.addEventListener("click", (event) => {
